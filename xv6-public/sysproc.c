@@ -50,17 +50,9 @@ sys_sbrk(void)
 
   if(argint(0, &n) < 0)
     return -1;
-
-  struct proc *p = myproc();
-  addr = p->sz;
-
-  p->sz += n ; // We are just increasing the variable but not allocating 
-  
-  /*
+  addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
-  */
-  
   return addr;
 }
 
@@ -96,4 +88,14 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+int sys_vmprint(void) 
+{
+  int pid ;
+  argint(0 , &pid);
+
+  if (pid < 0) return -1;
+
+  return vmprint(pid);
 }
