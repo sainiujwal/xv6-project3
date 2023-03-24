@@ -50,9 +50,17 @@ sys_sbrk(void)
 
   if(argint(0, &n) < 0)
     return -1;
-  addr = myproc()->sz;
+
+  struct proc *p = myproc();
+  addr = p->sz;
+
+  p->sz += n ; // We are just increasing the variable but not allocating 
+  
+  /*
   if(growproc(n) < 0)
     return -1;
+  */
+  
   return addr;
 }
 
