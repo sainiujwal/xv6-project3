@@ -532,3 +532,24 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int vmprint(int proc_id) {
+
+  pde_t* proc_pagetable = 0;
+  
+  acquire(&ptable.lock);
+  for (int i = 0 ; i < NPROC; i++) 
+  {
+    if (ptable.proc[i].pid == proc_id){
+      proc_pagetable = ptable.proc[i].pgdir;
+      break;
+    }
+  }
+  release(&ptable.lock);
+
+  if (proc_pagetable == 0) return -1;
+
+  print_pagetable(proc_pagetable , 0);
+
+  return 0;
+}
